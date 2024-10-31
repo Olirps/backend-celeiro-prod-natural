@@ -54,7 +54,7 @@ sequelize.authenticate()
     
 
     // Sincronizar os modelos com o banco de dados
-    await sequelize.sync({ force: true }); // Use force: true para recriar tabelas
+    await sequelize.sync({ force: false }); // Use force: true para recriar tabelas
     console.log("Modelos sincronizados com sucesso.");
   })
   .catch(err => {

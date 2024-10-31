@@ -46,19 +46,20 @@ router.get('/fornecedores', FornecedoresController.obterTodasFornecedores);
 router.get('/fornecedores/:id', FornecedoresController.obterFornecedoresPorId);
 router.put('/fornecedores/:id', FornecedoresController.atualizarFornecedores);
 router.delete('/fornecedores/:id', FornecedoresController.deletarFornecedores);
+
 // Rotas para Grupo produtos
-router.post('/produtos', GrupoProdutoController.criarGrupoProduto);
-router.get('/produtos', GrupoProdutoController.listarGruposProduto);
-router.get('/produtos/:id', GrupoProdutoController.obterGrupoProdutoPorId);
-router.put('/produtos/:id', GrupoProdutoController.atualizarGrupoProduto);
-router.delete('/produtos/:id', GrupoProdutoController.excluirGrupoProduto);
+router.post('/grupoproduto', GrupoProdutoController.criarGrupoProduto);
+router.get('/grupoproduto', GrupoProdutoController.listarGruposProduto);
+router.get('/grupoproduto/:id', GrupoProdutoController.obterGrupoProdutoPorId);
+router.put('/grupoproduto/:id', GrupoProdutoController.atualizarGrupoProduto);
+router.delete('/grupoproduto/:id', GrupoProdutoController.excluirGrupoProduto);
 
 // Rotas para Sub Grupo produtos
-router.post('/produtos', SubgrupoprodutoController.criarSubgrupoproduto);
-router.get('/produtos', SubgrupoprodutoController.listarSubgruposProduto);
-router.get('/produtos/:id', SubgrupoprodutoController.obterSubgrupoprodutoPorId);
-router.put('/produtos/:id', SubgrupoprodutoController.atualizarSubgrupoproduto);
-router.delete('/produtos/:id', SubgrupoprodutoController.excluirSubgrupoproduto);
+router.post('/subgrupoproduto', SubgrupoprodutoController.criarSubgrupoproduto);
+router.get('/subgrupoproduto', SubgrupoprodutoController.listarSubgruposProduto);
+router.get('/subgrupoproduto/:id', SubgrupoprodutoController.obterSubgrupoprodutoPorId);
+router.put('/subgrupoproduto/:id', SubgrupoprodutoController.atualizarSubgrupoproduto);
+router.delete('/subgrupoproduto/:id', SubgrupoprodutoController.excluirSubgrupoproduto);
 
 // Rotas para produtos
 router.post('/produtos', ProdutosController.criarProduto);

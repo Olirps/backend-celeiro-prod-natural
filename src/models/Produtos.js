@@ -13,7 +13,6 @@ const Produtos = sequelize.define('Produtos', {
         },
         subgrupo_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             references: {
               model: 'subgrupoproduto',
               key: 'id',
