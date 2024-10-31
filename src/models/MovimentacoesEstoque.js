@@ -1,79 +1,84 @@
 // src/models/MovimentacoesEstoque.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+const sequelize = require('../db'); // Ajuste o caminho conforme necessário
 const Produtos = require('../models/Produtos');
 const NotaFiscal = require('../models/NotaFiscal');
 
-
 const MovimentacoesEstoque = sequelize.define('MovimentacoesEstoque', {
 
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    produto_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'Produtos', // Nome da tabela associada
-            key: 'id'
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-    },
-    nota_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'nota_fiscal', // Nome da tabela associada
-            key: 'id'
+        produto_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Produtos', // Nome da tabela associada
+                key: 'id'
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-    },
-    tipo_movimentacao: {
-        type: DataTypes.ENUM('entrada', 'saida'),
-        allowNull: false
-    },
-    quantidade: {
-        type: DataTypes.DECIMAL(10, 5), // Aceita números com até 10 dígitos, sendo 2 casas decimais
-        allowNull: false,
-        validate: {
-            min: 0.00001 // Ajuste o valor mínimo se precisar aceitar valores fracionados
+        nota_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'notaFiscal', // Nome da tabela associada
+                key: 'id'
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE'
+        },
+        tipo_movimentacao: {
+            type: DataTypes.ENUM('entrada', 'saida'),
+            allowNull: false
+        },
+        quantidade: {
+            type: DataTypes.DECIMAL(10, 5), // Aceita números com até 10 dígitos, sendo 2 casas decimais
+            allowNull: false,
+            validate: {
+                min: 0.00001 // Ajuste o valor mínimo se precisar aceitar valores fracionados
+            }
+        },
+        valor_unit: {
+            type: DataTypes.DECIMAL(10, 5), // Aceita números com até 10 dígitos, sendo 2 casas decimais
+            allowNull: false,
+            validate: {
+                min: 0.00001 // Ajuste o valor mínimo se precisar aceitar valores fracionados
+            }
+        },
+        data_movimentacao: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW
+        },
+        observacoes: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        status: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
-    },
-    valor_unit: {
-        type: DataTypes.DECIMAL(10, 5), // Aceita números com até 10 dígitos, sendo 2 casas decimais
-        allowNull: false,
-        validate: {
-            min: 0.00001 // Ajuste o valor mínimo se precisar aceitar valores fracionados
-        }
-    },
-    data_movimentacao: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
-    },
-    observacoes: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    status: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
-}, {
-    sequelize,
-    modelName: 'MovimentacoesEstoque',
-    tableName: 'movimentacoes_estoque',
-    timestamps: false // Desabilita os timestamps automáticos
-});
+    }, {
+        sequelize,
+        modelName: 'MovimentacoesEstoque',
+        tableName: 'movimentacoesEstoque',
+        timestamps: false // Desabilita os timestamps automáticos
+    });
+  
+    MovimentacoesEstoque.associate = () => {
+        MovimentacoesEstoque.belongsTo(Produtos, {
+        foreignKey: 'produto_id',
+        as: 'produtos',
+      }),
+        MovimentacoesEstoque.belongsTo(NotaFiscal, {
+        foreignKey: 'nota_id',
+        as: 'notaFiscal',
+      });
+    };
 
-// Associação com Produtos
-MovimentacoesEstoque.belongsTo(Produtos, {
-    foreignKey: 'produto_id',
-    as: 'produto'
-});
-
-module.exports = MovimentacoesEstoque;
+    module.exports = MovimentacoesEstoque;
+  

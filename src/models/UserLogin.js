@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db'); // Ajuste o caminho conforme necessário
-const GrupoAcesso = require('../models/GrupoAcesso'); // Importar o modelo GrupoAcesso
+const GrupoAcesso = require('../models/GrupoAcesso');
+
 
 const UserLogin = sequelize.define('UserLogin', {
     id: {
@@ -27,24 +28,28 @@ const UserLogin = sequelize.define('UserLogin', {
     grupoAcessoId: {
         type: DataTypes.INTEGER,
         references: {
-            model: GrupoAcesso, // Nome do modelo referenciado
+            model: 'grupoacesso', // Nome da tabela no banco, conforme definido em GrupoAcesso
             key: 'id'
         }
     }
 }, {
-    tableName: 'user_login', // Nome da tabela no banco de dados
-    timestamps: false, // Se você não deseja incluir colunas de timestamps (createdAt e updatedAt)
+    tableName: 'userLogin', // Nome da tabela no banco de dados
+    timestamps: false,
     defaultScope: {
         rawAttributes: { exclude: ['password'] },
     },
 });
 
-// Metodo para validar a senha
+// Método para validar a senha
 UserLogin.prototype.validatePassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };
 
-// Definindo o relacionamento
-UserLogin.belongsTo(GrupoAcesso, { foreignKey: 'grupoAcessoId' });
+UserLogin.associate = () => {
+    UserLogin.belongsTo(GrupoAcesso, {
+        foreignKey: 'grupoAcessoId',
+        as: 'grupoacesso',
+    });
+};
 
 module.exports = UserLogin;

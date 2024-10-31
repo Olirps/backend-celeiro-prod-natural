@@ -1,8 +1,7 @@
-// models/GrupoAcesso.js
-const {  DataTypes } = require('sequelize');
-const sequelize = require('../db'); // Importar o Sequelize
+const { DataTypes } = require('sequelize');
+const sequelize = require('../db'); // Ajuste o caminho conforme necessário
 
-const GrupoAcesso = sequelize.define('GrupoAcesso',{
+const GrupoAcesso = sequelize.define('GrupoAcesso', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -30,9 +29,15 @@ const GrupoAcesso = sequelize.define('GrupoAcesso',{
         defaultValue: false
     }
 }, {
-
-    tableName: 'grupo_acessos', // Nome da tabela no banco de dados
-    timestamps: false // Se você não deseja incluir colunas de timestamps (createdAt e updatedAt)
+    tableName: 'grupoacesso', // Nome da tabela no banco de dados
+    timestamps: false
 });
+
+GrupoAcesso.associate = (models) => {
+    GrupoAcesso.hasMany(models.UserLogin, { // Consistência no nome da model
+        foreignKey: 'grupoAcessoId',
+        as: 'userLogin',
+    });
+};
 
 module.exports = GrupoAcesso;
